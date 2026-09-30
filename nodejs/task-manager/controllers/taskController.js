@@ -10,7 +10,7 @@ const createTask = async (req, res) => {
       status,
       priority,
       dueDate,
-      user: req.user.id,
+      // user: req.user.id,
     });
 
     res.status(200).json({
@@ -64,7 +64,7 @@ const oneTask = async (req, res) => {
 
 const deleteTask = async (req, res) => {
   try{
-    const task = Task.findByIdAndDelete(req.params.id);
+    const task = await Task.findByIdAndDelete(req.params.id);
 
   res.status(200).json({
     data: 'deleted'
