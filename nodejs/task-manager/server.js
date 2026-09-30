@@ -1,14 +1,9 @@
 const dotenv = require('dotenv');
 const mongoose = require('mongoose')
 const express = require('express')
-const taskRoutes = require('./routes/taskRoutes');
+const app = require('./middleware/app')
 
 dotenv.config({ path: './config.env' });
-
-const app = express();
-
-app.use(express.json());
-app.use('/api/v1/tasks', taskRoutes);
 
 
 const connectDB = async () => {
