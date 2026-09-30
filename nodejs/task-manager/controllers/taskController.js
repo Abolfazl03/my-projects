@@ -13,7 +13,7 @@ const createTask = async (req, res) => {
       user: req.user.id,
     });
 
-    res.status(201).json({
+    res.status(200).json({
       status: "success",
       data: {
         task,
@@ -28,7 +28,7 @@ const createTask = async (req, res) => {
 };
 
 
-const findTasks = async (req, res) => {
+const allTasks = async (req, res) => {
   try{
     const tasks = await Task.find({
     user: req.params.id,
@@ -38,46 +38,57 @@ const findTasks = async (req, res) => {
       tasks
     }
   })
-  } catch (err){
-    console.log(err)
-  }
+  } catch (err) {
+  res.status(500).json({
+    status: 'error',
+    message: err.message
+  });
+}
 }
 
-const findTask = async (req, res) => {
+const oneTask = async (req, res) => {
   try{
-    const task = Task.find({
-    user: req.params.id,
-    title,
-  });
+    const task = await Task.findById(req.params.id);
 
   res.status(201).json({
     data:
     task,
   });
-  } catch (err){
-    console.log(err)
-  }
+  } catch (err) {
+  res.status(500).json({
+    status: 'error',
+    message: err.message
+  });
+}
 }
 
 const deleteTask = async (req, res) => {
   try{
-    const task = Task.deleteOne({
-    user: req.params.id,
-    title,
-  });
+    const task = Task.findByIdAndDelete(req.params.id);
 
-  res.status(201).json({
+  res.status(200).json({
     data: 'deleted'
   });
-  } catch (err){
-    console.log(err)
-  }
+  } catch (err) {
+  res.status(500).json({
+    status: 'error',
+    message: err.message
+  });
+}
+}
+
+const updateTask = async (req, res) => {
+  const task = await Task.findByIdAndUpdate(req.params.id, req.body, {
+    new: true,
+    runValidators: true
+  })
 }
 
 
 module.exports = {
   createTask,
-  findTasks,
-  findTask,
+  allTasks,
+  oneTask,
   deleteTask,
+  updateTask,
 };

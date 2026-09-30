@@ -4,10 +4,14 @@ const taskController = require('../controllers/taskController');
 const router = express.Router();
 
 
-router.route('api/v1/task')
-.get(taskController.findTasks)
+router.route('/')
+.get(taskController.allTasks)
+.post(taskController.createTask)
 
-router.route('api/v1/task/:id')
-.get(taskController.findTask)
+router.route('/:id')
+.get(taskController.oneTask)
+.patch(taskController.updateTask)
 .delete(taskController.deleteTask)
+
+module.exports = router;
 
