@@ -21,7 +21,7 @@ const createTask = async (req, res, next) => {
       },
     });
   } catch (error) {
-    next(new appError(error.message, 401))
+    next(error)
   }
 };
 
@@ -36,7 +36,7 @@ const allTasks = async (req, res, next) => {
       }
     });
   } catch (err) {
-    next(err.message, 500)
+    next(err)
   }
 };
 
@@ -44,10 +44,7 @@ const oneTask = async (req, res, next) => {
   try{
     const task = await Task.findById(req.params.id);
     if (!task) {
-  return res.status(404).json({
-    status: 'fail',
-    message: 'Task not found'
-  });
+      next(new appError('task not found', 404))
 }
 
   res.status(200).json({
@@ -55,7 +52,7 @@ const oneTask = async (req, res, next) => {
     task,
   });
   } catch (err) {
-    next(err.message, 500)
+    next(err)
 }
 }
 
@@ -73,7 +70,7 @@ const deleteTask = async (req, res, next) => {
     data: 'deleted'
   });
   } catch (err) {
-  next(err.message, 500)
+  next(err)
 }
 }
 
@@ -95,7 +92,7 @@ const updateTask = async (req, res, next) => {
     }
   })
   } catch (err) {
-  next(err.message, 500)
+  next(err)
 }
 }
 
